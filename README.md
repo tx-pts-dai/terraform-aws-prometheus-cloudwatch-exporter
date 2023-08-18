@@ -77,23 +77,40 @@ as described in the `.pre-commit-config.yaml` file
 
 ## Providers
 
-No providers.
+| Name | Version |
+|------|---------|
+| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 4.0 |
 
 ## Modules
 
-No modules.
+| Name | Source | Version |
+|------|--------|---------|
+| <a name="module_this"></a> [this](#module\_this) | aws-ia/eks-blueprints-addon/aws | ~> 1.0 |
 
 ## Resources
 
-No resources.
+| Name | Type |
+|------|------|
+| [aws_iam_policy.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
+| [aws_iam_policy_document.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 
 ## Inputs
 
-No inputs.
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_chart_version"></a> [chart\_version](#input\_chart\_version) | prometheus-cloudwatch-exporter chart version to be installed. Chart taken from https://github.com/prometheus-community/helm-charts | `string` | n/a | yes |
+| <a name="input_cluster_oidc_provider_arn"></a> [cluster\_oidc\_provider\_arn](#input\_cluster\_oidc\_provider\_arn) | ARN of the EKS OpenIDConnect provider. Required for IAM Role for Service Account authentication. | `string` | n/a | yes |
+| <a name="input_helm_additional_values"></a> [helm\_additional\_values](#input\_helm\_additional\_values) | Additional list of values for Helm Release | `list(string)` | `[]` | no |
+| <a name="input_iam_role_additional_policies"></a> [iam\_role\_additional\_policies](#input\_iam\_role\_additional\_policies) | Map ('name' => 'policy\_arn') of additional policies to attach to the IAM Role assumed by the CloudWatch Exporter Pod | `map(string)` | `{}` | no |
+| <a name="input_kubernetes_service_account_name"></a> [kubernetes\_service\_account\_name](#input\_kubernetes\_service\_account\_name) | Name of the Kubernetes Service Account that will be created and can assume the IAM Role on AWS. Override in case of multiple deployments of the module in the same namespace | `string` | `"prometheus-cloudwatch-exporter"` | no |
+| <a name="input_namespace"></a> [namespace](#input\_namespace) | Kubernetes namespace where the Helm Release will be installed to | `string` | `"prometheus"` | no |
 
 ## Outputs
 
-No outputs.
+| Name | Description |
+|------|-------------|
+| <a name="output_iam_role_arn"></a> [iam\_role\_arn](#output\_iam\_role\_arn) | IAM Role ARN created for letting the Pod authenticate through IRSA |
+| <a name="output_iam_role_name"></a> [iam\_role\_name](#output\_iam\_role\_name) | IAM Role ARN created for letting the Pod authenticate through IRSA |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
 ## Authors
