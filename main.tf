@@ -5,11 +5,21 @@ terraform {
       source  = "hashicorp/aws"
       version = ">= 4.0"
     }
+    random = {
+      source  = "hashicorp/random"
+      version = ">= 3.0"
+    }
   }
 }
 
 locals {
   cloudwatch_exporter_chart_name = "prometheus-cloudwatch-exporter"
+  release_name                   = "${var.release_name_prefix}-${random_id.suffix.hex}"
+}
+
+resource "random_id" "suffix" {
+  # random enough to allow for multiple instances of cloudwatch exporter in the same cluster
+  byte_length = 2
 }
 
 module "this" {
@@ -19,11 +29,12 @@ module "this" {
   repository    = "https://prometheus-community.github.io/helm-charts"
   chart         = local.cloudwatch_exporter_chart_name
   chart_version = var.chart_version
+  name          = local.release_name
   namespace     = var.namespace # Same namespace as other Prometheus exporters
 
   values = concat(
     [templatefile("${path.module}/config/helm_values/cloudwatch-exporter.yaml", {
-      service_account_name = var.kubernetes_service_account_name
+      service_account_name = local.release_name
       iam_role_arn         = module.this.iam_role_arn
     })],
     var.helm_additional_values
@@ -31,7 +42,7 @@ module "this" {
   lint = true # To be tested. "Runs helm chart linter at terraform plan time"
 
   create_role = true
-  role_name   = var.kubernetes_service_account_name
+  role_name   = local.release_name
   role_policies = merge({
     cloudwatch-exporter = aws_iam_policy.this.arn
   }, var.iam_role_additional_policies)
@@ -40,7 +51,7 @@ module "this" {
   oidc_providers = {
     this = {
       provider_arn    = var.cluster_oidc_provider_arn
-      service_account = var.kubernetes_service_account_name
+      service_account = local.release_name
     }
   }
 }

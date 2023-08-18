@@ -26,8 +26,8 @@ variable "cluster_oidc_provider_arn" {
   type        = string
 }
 
-variable "kubernetes_service_account_name" {
-  description = "Name of the Kubernetes Service Account that will be created and can assume the IAM Role on AWS. Override in case of multiple deployments of the module in the same namespace"
+variable "release_name_prefix" {
+  description = "Name prefix of the Helm Release that will be created. This name is used to name the IAM role and Service Account that will be created."
   type        = string
   default     = "prometheus-cloudwatch-exporter"
 }
