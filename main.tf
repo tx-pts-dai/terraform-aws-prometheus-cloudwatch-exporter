@@ -39,7 +39,6 @@ module "this" {
     })],
     var.helm_additional_values
   )
-  lint = true # To be tested. "Runs helm chart linter at terraform plan time"
 
   create_role = true
   role_name   = local.release_name
