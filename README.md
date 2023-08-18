@@ -8,7 +8,8 @@ It aims at supporting good default with possibility to override basic configurat
 
 ```hcl
 module "cloudwatch_exporter" {
-  source = "github.com/tx-pts-dai/terraform-aws-prometheus-cloudwatch-exporter?ref=v0.1.0
+  source = "tx-pts-dai/terraform-aws-prometheus-cloudwatch-exporter"
+  version = "~> 0.1.0"
 
   chart_version             = "0.25.1"
   cluster_oidc_provider_arn = module.eks.cluster_oidc_provider_arn
