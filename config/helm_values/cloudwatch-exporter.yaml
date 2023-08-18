@@ -7,4 +7,4 @@ pod:
   # allow auto-scraping from prometheus-server
   annotations:
     prometheus.io/scrape: "true"
-    prometheus.io/port: "9106"
+    prometheus.io/port: "9106" # must match the `service.port`
